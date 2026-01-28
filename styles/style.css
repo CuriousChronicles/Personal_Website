@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&display=swap');
+:root {
+    --base-clr: #11121a;
+    --line-clr: #42434a;
+    --hover-clr: #222533;
+    --text-clr: #e6e6ef;
+    --accent-clr: #ff6ac1;
+    --secondary-text-clr: #a1a1b8;
+}
+
+*margin{
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    font-family: 'Bitcount Single', monospace;
+    line-height: 1.5rem;
+}
+
+body{
+    min-height: 100vh;
+    min-width: 100dvh;
+    background-color: var(--base-clr);
+    color: var(--text-clr);
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+main{
+    padding-left: 50px;
+}
