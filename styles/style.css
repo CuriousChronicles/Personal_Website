@@ -27,6 +27,63 @@ body{
     grid-template-columns: auto 1fr;
 }
 
+#sidebar {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 260px; /* Expanded width */
+    padding: 10px;
+    background-color: var(--base-clr);
+    border-right: 1px solid var(--line-clr);
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: width 0.3s ease; /* Smooth transition */
+    overflow: hidden;
+}
+
+/* State when sidebar is closed */
+#sidebar.close {
+    width: 80px;
+}
+
+main.expanded {
+    margin-left: 80px; /* Matches closed sidebar width */
+}
+
+#sidebar ul li {
+    list-style: none;
+    width: 100%;
+    margin: 5px 0;
+}
+
+#sidebar a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-clr);
+    padding: 0.85em;
+    border-radius: 0.5em;
+    white-space: nowrap; /* Prevents text from wrapping when collapsing */
+}
+
+#sidebar a:hover {
+    background-color: var(--hover-clr);
+}
+
+/* Hide text labels when sidebar is closed */
+#sidebar.close span {
+    display: none;
+}
+
+#toggle_btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
 main{
-    padding-left: 50px;
+    margin-left: 260px;
+    padding: 2em;
+    transition: margin-left 0.3s ease; 
 }
