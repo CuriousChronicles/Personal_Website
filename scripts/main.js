@@ -1,8 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleBtn = document.getElementById('toggle_btn');
+const sidebar = document.getElementById('sidebar');
 
-    toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('close');
-        mainContent.classList.toggle('expanded');
-    });
-});
+function toggleSidebar() {
+    sidebar.classList.toggle('close');
+}
