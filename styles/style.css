@@ -50,6 +50,7 @@ body{
 }
 #sidebar.close a{
     justify-content: center;
+    padding: 0.85em 0;
 }
 #sidebar.close .logo {
     display: none;
@@ -93,12 +94,6 @@ body{
 #sidebar a:hover {
     background-color: var(--hover-clr);
 }
-/* Hide text labels when sidebar is closed */
-/* #sidebar.close span {
-    display: none;
-    opacity: 0;
-    transition: opacity 1s ease;
-} */
 #sidebar_toggle {
     margin-left: auto;
     background: none;
@@ -116,4 +111,36 @@ main p{
   margin-top: 5px;
   margin-bottom: 15px;
 }
-
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    /* height: 100vh; */
+    width: 100%;
+}
+.project_item{
+    width: 325px;
+    background-color: var(--line-clr);
+    border-radius: 8px;
+    margin: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.project_item:hover{
+    background-color: var(--hover-clr);
+    width: 335px;
+    transition: width 0.3s ease; /* Smooth transition for width change */
+}
+.project_item img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* cover ensures the image covers the entire container, maintains its aspect ratio, and does not exceed container dimentions */
+}
+.project_item .content{
+    padding: 15px;
+}
+.project_item .content h3{
+    margin-top: auto;
+    margin-bottom: 5px;
+}
