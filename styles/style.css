@@ -7,9 +7,10 @@
     --accent-clr: #806aff; 
     --secondary-text-clr: #a1a1b8;
 }
-*margin{
+*{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 html{
     font-family: 'Bitcount Single', monospace;
@@ -17,11 +18,12 @@ html{
 }
 body{
   min-height: 100vh;
-  min-height: 100dvh;
   background-color: var(--base-clr);
   color: var(--text-clr);
   display: grid;
   grid-template-columns: auto 1fr;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 #sidebar{
   box-sizing: border-box;
@@ -102,39 +104,63 @@ body{
     cursor: pointer;
     padding: 1em;
 }
-
 main{
     padding: min(30px, 7%);
+    min-width: 0;
 }
 main p{
   color: var(--secondary-text-clr);
-  margin-top: 5px;
+  margin-top: 15px;
   margin-bottom: 15px;
+}
+.carousel-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .container{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    /* height: 100vh; */
+    overflow-x: auto;
     width: 100%;
+    padding: 40px 0;
+    align-items: center;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    gap: 20px;
+}
+.container::-webkit-scrollbar {
+    display: none;                
 }
 .project_item{
+    flex: 0 0 325px;
     width: 325px;
+    scroll-snap-align: center;
+    /* display: flex; */
+    flex-direction: column;
     background-color: var(--line-clr);
     border-radius: 8px;
     margin: 20px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    /* opacity: 0.4; */
+    transform: scale(0.9);
+    transition: all 0.4s ease;
+}
+.project_item.active {
+    opacity: 1;
+    transform: scale(1.1); /* Slightly larger to stand out */
 }
 .project_item:hover{
     background-color: var(--hover-clr);
-    width: 335px;
-    transition: width 0.3s ease; /* Smooth transition for width change */
+    transform: scale(1.05);
+    transition: transform 0.3s ease; /* Smooth transition for scaling change */
 }
 .project_item img{
     width: 100%;
-    height: 200px;
+    height: 300px;
     object-fit: cover; /* cover ensures the image covers the entire container, maintains its aspect ratio, and does not exceed container dimentions */
 }
 .project_item .content{
@@ -143,4 +169,22 @@ main p{
 .project_item .content h3{
     margin-top: auto;
     margin-bottom: 5px;
+}
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.dots a {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--line-clr);
+    transition: background-color 0.3s ease;
+}
+
+.dots a:hover {
+    background-color: var(--accent-clr);
 }
