@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&display=swap');
 :root {
+    --base-clr: #e6e6ef;
+    --line-clr: #e2e2e9;
+    --hover-clr: #f0f0f7;
+    --text-clr: #11121a;
+    --accent-clr: #6246ea; 
+    --secondary-text-clr: #5b5b71;
+}
+.darkmode {
     --base-clr: #11121a;
-    --line-clr: #42434a;
-    --hover-clr: #222533;
+    --line-clr: #222533;
+    --hover-clr: #42434a;
     --text-clr: #e6e6ef;
     --accent-clr: #806aff; 
     --secondary-text-clr: #a1a1b8;
@@ -26,19 +34,19 @@ body{
   overflow-y: auto;
 }
 #sidebar{
-  box-sizing: border-box;
-  height: 100vh;
-  width: 250px;
-  padding: 5px 1em;
-  background-color: var(--base-clr);
-  border-right: 1px solid var(--line-clr);
-
-  position: sticky;
-  top: 0;
-  align-self: start;
-  transition: 300ms ease-in-out; /*smooth transition for closing*/
-  overflow: hidden;
-  text-wrap: nowrap;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 250px;
+    padding: 5px 1em;
+    background-color: var(--base-clr);
+    border-right: 1px solid var(--line-clr);
+    top: 0;
+    align-self: start;
+    transition: 300ms ease-in-out; /*smooth transition for closing*/
+    overflow: hidden;
+    text-wrap: nowrap;
 }
 #sidebar.close{
     width: 80px;
@@ -57,8 +65,13 @@ body{
 #sidebar.close .logo {
     display: none;
 }
+#sidebar.close #theme-switch {
+    margin-left: auto;
+    margin-right: auto;
+}
 #sidebar ul{
-  list-style: none;
+    list-style: none;
+    flex-grow: 0;
 }
 #sidebar ul li.active a{
     color: var(--accent-clr);
@@ -76,7 +89,7 @@ body{
         font-weight: 600;
     }
 }
-#sidebar a, #sidebar .logo{
+#sidebar a, #sidebar .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -109,9 +122,42 @@ main{
     min-width: 0;
 }
 main p{
-  color: var(--secondary-text-clr);
-  margin-top: 15px;
-  margin-bottom: 15px;
+    color: var(--secondary-text-clr);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+#theme-switch {
+    margin-top: auto;
+    margin-bottom: 20px;
+    
+    height: 40px;
+    width: 40px;
+    background: none;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    background-color: var(--line-clr);
+    cursor: pointer;
+
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#theme-switch svg {
+    margin-right: 0;
+}
+#theme-switch:hover {
+    background-color: var(--hover-clr);
+}
+#theme-switch svg:last-child {
+    display: none;
+}
+.darkmode #theme-switch svg:first-child {
+    display: none;
+}
+.darkmode #theme-switch svg:last-child {
+    display: block;
 }
 .carousel-wrapper {
     width: 100%;
