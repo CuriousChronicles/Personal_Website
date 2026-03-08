@@ -1,31 +1,69 @@
-form {
+.container {
     display: inline-block;
+    height: 100vh;
     padding: 1em;
-    border: 1px solid var(--accent-clr);
-    border-radius: 8px;
 }
-label {
-    display: inline-block;
-    min-width: 90px;
-    text-align: right;
+form {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 1em;
 }
-input, textarea {
+.form-header h2{
+    font-size: 1.5rem;
+    font-weight: 400;
+    max-width: 600px;
+    line-height: 1.4;
+    margin-bottom: 1em;
+}
+.form-header p{
+    color: var(--secondary-text-clr);
+    margin-bottom: 1em;
+}
+.contact-input {
     width: 300px;
-    box-sizing: border-box;
-    border: 1px solid var(--accent-clr);
-    border-radius: 4px;
+    height: 40px;
+    outline: none;
+    padding-left: 25px;
+    font-weight: 500;
+    border-radius: 50px;
+    margin-bottom: 10px;
 }
-input:focus, textarea:focus {
+.container textarea {
+    height: 150px;
+    padding-top: 15px;
+    border-radius: 20px;
+}
+.contact-input:focus, textarea:focus {
     outline: solid;
     border-color: var(--accent-clr);
     box-shadow: 0 0 5px var(--accent-clr);
 }
-textarea {
-    height: 150px;
-    vertical-align: top;
+.contact-input::placeholder, textarea::placeholder {
+    color: var(--secondary-text-clr);
+    font-style: italic;
 }
 .submit-btn {
-    display: block;
-    padding-left: 90px;
-    margin-left: 0.5em
+    font-family: Bitcount Single, monospace;
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-clr);
+    background-color: var(--line-clr);
+    box-shadow: 0 4px 8px var(--shadow-clr);
+    gap: 10px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    width: fit-content;
+    margin-top: 20px;
+}
+.submit-btn:hover {
+    background-color: var(--accent-clr);
+}
+.submit-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--text-clr);
 }
