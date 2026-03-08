@@ -176,49 +176,30 @@ main::-webkit-scrollbar-thumb:hover {
 .darkmode #theme-switch svg:last-child {
     display: block;
 }
-.carousel-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 .container{
-    display: flex;
-    overflow-x: auto;
-    width: 100%;
-    padding: 40px 0;
-    align-items: center;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
     gap: 20px;
-}
-.container::-webkit-scrollbar {
-    display: none;                
+    padding: 40px 0;
+    width: 100%;
 }
 .project_item{
-    flex: 0 0 325px;
-    width: 325px;
-    scroll-snap-align: center;
-    flex-direction: column;
     background-color: var(--line-clr);
-    border-radius: 8px;
-    margin: 20px;
+    border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 8px var(--shadow-clr);
-}
-.project_item.active {
-    opacity: 1;
-    transform: scale(1.1); /* Slightly larger to stand out */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 .project_item:hover{
     background-color: var(--hover-clr);
-    transform: scale(1.05);
-    transition: transform 0.3s ease; 
+    box-shadow: 0 15px 40px var(--shadow-clr);
+    transform: translateY(-8px);
 }
 .project_item img{
     width: 100%;
-    height: 300px;
+    height: 200px;
     object-fit: cover; /* cover ensures the image covers the entire container, maintains its aspect ratio, and does not exceed container dimentions */
 }
 .project_item .content{
@@ -227,22 +208,4 @@ main::-webkit-scrollbar-thumb:hover {
 .project_item .content h3{
     margin-top: auto;
     margin-bottom: 5px;
-}
-.dots {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.dots a {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--text-clr);
-    transition: background-color 0.3s ease;
-}
-
-.dots a:hover {
-    background-color: var(--accent-clr);
 }
