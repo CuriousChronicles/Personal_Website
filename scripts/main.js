@@ -4,6 +4,16 @@ let darkMode = localStorage.getItem('darkMode');
 
 function toggleSidebar() {
     sidebar.classList.toggle('close');
+
+    if (sidebar.classList.contains('close')) {
+        localStorage.setItem('sidebarState', 'close');
+    } else {
+        localStorage.setItem('sidebarState', 'open');
+    }
+}
+
+if (localStorage.getItem('sidebarState') === 'close') {
+    sidebar.classList.add('close');
 }
 
 const enableDarkMode = () => {
@@ -16,6 +26,10 @@ const disableDarkMode = () => {
     document.body.classList.remove('darkmode');
     localStorage.setItem('darkMode', null);
     darkMode = "inactive";
+}
+
+if (darkMode === "active") {
+    enableDarkMode();
 }
 
 themeSwitch.addEventListener('click', () => {

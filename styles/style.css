@@ -166,6 +166,7 @@ main::-webkit-scrollbar-thumb:hover {
 #theme-switch:hover {
     background-color: var(--hover-clr);
 }
+
 #theme-switch svg:last-child {
     display: none;
 }
