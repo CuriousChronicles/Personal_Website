@@ -24,6 +24,7 @@
 }
 html{
     font-family: 'Bitcount Single', monospace;
+    font-weight: 500;
     line-height: 1.5rem;
     height: 100vh;
     overflow: hidden;
@@ -311,6 +312,13 @@ main::-webkit-scrollbar-thumb:hover {
 }
 .project_item .content{
     padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.project_item p{
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 .project_item .content .date{
     display: block;
@@ -321,6 +329,12 @@ main::-webkit-scrollbar-thumb:hover {
     margin-bottom: 10px;
 }
 .project_item .content h3{
-    margin-top: auto;
+    margin-top: 0;
     margin-bottom: 5px;
+}
+.project-link {
+    margin-top: auto;
+    text-decoration: none;
+    color: var(--accent-clr); 
+    font-weight: 500;
 }
