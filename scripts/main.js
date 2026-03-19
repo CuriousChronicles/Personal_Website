@@ -12,6 +12,12 @@ function toggleSidebar() {
     }
 }
 
+/* hadnle case where the screensize is too small to fit the sidebar and main content side by side */
+if (window.innerWidth < 750) {
+    sidebar.classList.add('close');
+    localStorage.setItem('sidebarState', 'close');
+}
+
 if (localStorage.getItem('sidebarState') === 'close') {
     sidebar.classList.add('close');
 }
