@@ -62,10 +62,10 @@ main p{
     width: 100%;
     margin-bottom: 20px;
 }
-.welcome-section h1{
+h1{
     font-size: 2.5rem;
     margin-bottom: 20px;
-    color: var(--accent-clr);
+    font-weight: 600;
 }
 .welcome-content{
     display: block;
@@ -96,7 +96,12 @@ main p{
     shape-outside: circle(50%);
     transition: transform 0.3s ease;
 } 
-@media (max-width: 810px) {
+@media (max-width: 750px) {
+    .welcome-section {
+        flex-direction: column;
+        text-align: left;
+        flex-direction: column-reverse;
+    }
     .profile-pic img {
         float: none;          
         display: block;       
@@ -105,11 +110,6 @@ main p{
         height: 200px;
         shape-outside: none;  
     }
-
-    .welcome-content {
-        text-align: center;   
-    }
-    
     .welcome-content h1 {
         font-size: 2rem;    
     }
@@ -135,6 +135,7 @@ main::-webkit-scrollbar-thumb {
 main::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-text-clr);
 }
+/* Sidebar */
 #sidebar{
     display: flex;
     flex-direction: column;
@@ -196,7 +197,7 @@ main::-webkit-scrollbar-thumb:hover {
     color: var(--text-clr);
     padding: 0.85em;
     border-radius: 0.5em;
-    white-space: nowrap; /* Prevents text from wrapping when collapsing */
+    white-space: nowrap; 
 }
 #sidebar svg{
     flex-shrink: 0;
@@ -250,6 +251,8 @@ main::-webkit-scrollbar-thumb:hover {
 #sidebar.close .sidebar-footer {
     padding-bottom: 15px;
 }
+
+/* Theme Switch Button */
 #theme-switch {
     height: 40px;
     width: 40px;
@@ -281,13 +284,20 @@ main::-webkit-scrollbar-thumb:hover {
 .darkmode #theme-switch svg:last-child {
     display: block;
 }
+
+/* Projects Section */
+.my-recent-projects{
+    width: 100%;
+    max-width: 1400px;
+    padding: 40px 0;
+}
 .container{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
     gap: 20px;
     padding: 40px 0;
     width: 100%;
-    justify-content: center;
+    justify-content: left;
 }
 .project_item{
     max-width: 400px;
@@ -309,6 +319,10 @@ main::-webkit-scrollbar-thumb:hover {
     aspect-ratio: 16 / 9;
     object-fit: cover; /* cover ensures the image covers the entire container, maintains its aspect ratio, and does not exceed container dimentions */
     display: block;
+}
+#tic-tac-toe img {
+    object-fit: cover;
+    object-position: center 10%;
 }
 .project_item .content{
     padding: 15px;
@@ -337,4 +351,89 @@ main::-webkit-scrollbar-thumb:hover {
     text-decoration: none;
     color: var(--accent-clr); 
     font-weight: 500;
+}
+
+/* Work Experience Section*/
+.experience-section{
+    width: 100%;
+    max-width: 1400px;
+    padding: 40px 0;
+}
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: var(--text-clr);
+}
+.experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+.experience-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 28px;
+    border-radius: 12px;
+    transition: background-color 0.2s ease;
+}
+.experience-item:hover {
+    background-color: var(--hover-clr);
+}
+.experience-date {
+    font-size: 0.85rem;
+    color: var(--secondary-text-clr);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-top: 4px;
+    white-space: nowrap;
+}
+.experience-role {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-clr);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.experience-link-icon {
+    color: var(--accent-clr);
+    text-decoration: none;
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+.experience-link-icon:hover {
+    transform: translate(2px, -2px);
+}
+.experience-content p {
+    color: var(--secondary-text-clr);
+    margin-top: 0;
+    margin-bottom: 16px;
+    line-height: 1.7;
+}
+.experience-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+.tag {
+    background-color: var(--line-clr);
+    color: var(--accent-clr);
+    border: 1px solid var(--accent-clr);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+@media (max-width: 600px) {
+    .experience-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
 }
