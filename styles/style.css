@@ -175,7 +175,8 @@ main::-webkit-scrollbar-thumb:hover {
     display: none;
 }
 #sidebar.close svg {
-    margin-right: 0;
+    /* margin-right: 40px; */
+    margin: 0 auto;
 }
 #sidebar.close a{
     justify-content: center;
@@ -184,9 +185,9 @@ main::-webkit-scrollbar-thumb:hover {
 #sidebar.close .logo {
     display: none;
 }
-#sidebar.close #theme-switch {
-    margin-left: auto;
-    margin-right: auto;
+ #sidebar.close #sidebar_toggle {
+    justify-content: center;
+    padding: 0.85em 0;
 }
 #sidebar ul{
     list-style: none;
@@ -217,7 +218,7 @@ main::-webkit-scrollbar-thumb:hover {
     border-radius: 0.5em;
     white-space: nowrap; 
 }
-#sidebar svg{
+#sidebar .nav svg, #sidebar #sidebar_toggle svg {
     flex-shrink: 0;
     fill: var(--text-clr);
     margin-right: 10px;
@@ -240,7 +241,8 @@ main::-webkit-scrollbar-thumb:hover {
     margin-top: auto;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: right;
+    justify-content: center;
     gap: 15px; 
     padding-bottom: 20px;
 }
@@ -252,11 +254,19 @@ main::-webkit-scrollbar-thumb:hover {
     border-radius: 50%;
 }.social-links a {
     display: flex;
+    justify-content: center;
+    align-items: center;
     height: 40px;
     width: 40px;
     border-radius: 50%;
     background-color: var(--line-clr);
     color: var(--text-clr);
+}
+.social-links a svg {
+    flex-shrink: 0;
+    fill: var(--text-clr);
+    display: block;
+    margin-right: 0;
 }
 #sidebar.close .sidebar-footer {
     flex-direction: column;
@@ -286,6 +296,8 @@ main::-webkit-scrollbar-thumb:hover {
     align-items: center;
 }
 #theme-switch svg {
+    flex-shrink: 0;
+    fill: var(--text-clr);
     margin-right: 0;
 }
 #theme-switch:hover {
@@ -364,10 +376,14 @@ main::-webkit-scrollbar-thumb:hover {
     margin-bottom: 5px;
 }
 .project-link {
-    margin-top: auto;
+    margin-top: 8px;
     text-decoration: none;
-    color: var(--accent-clr); 
+    color: var(--accent-clr);
     font-weight: 500;
+}
+.project_item .experience-tags {
+    margin-top: auto;
+    padding-top: 12px;
 }
 @media (max-width: 750px) {
     .container {
@@ -446,6 +462,7 @@ main::-webkit-scrollbar-thumb:hover {
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 12px;
+    padding: 10px 0;
 }
 .tag {
     background-color: var(--line-clr);
