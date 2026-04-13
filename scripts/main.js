@@ -42,3 +42,16 @@ themeSwitch.addEventListener('click', () => {
     darkMode = localStorage.getItem('darkMode');
     darkMode !== "active" ? enableDarkMode() : disableDarkMode();
 });
+
+/* Scroll Reveal */
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            const delay = entry.target.dataset.revealDelay || 0;
+            setTimeout(() => entry.target.classList.add('visible'), delay);
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.10 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));

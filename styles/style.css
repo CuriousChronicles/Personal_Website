@@ -60,12 +60,30 @@ main p{
     gap: 40px;
     padding: 60px 0;
     width: 100%;
+    height: fit-content;
     margin-bottom: 20px;
 }
 h1{
-    font-size: 2.5rem;
+    line-height: 3.5rem;
+    font-size: 3rem;
     margin-bottom: 20px;
-    font-weight: 600;
+    font-weight: 500;
+    overflow: hidden;
+    padding-left: 10px;
+    white-space: nowrap;
+    width: fit-content;
+    border-right: 3px solid var(--accent-clr);
+    animation:
+        typing 1s steps(9, end) forwards,
+        blink 0.7s step-end 1s 5;
+}
+@keyframes typing {
+    from { width: 0 }
+    to   { width: 9ch }
+}
+@keyframes blink {
+    0%, 100% { border-color: var(--accent-clr) }
+    50%       { border-color: transparent }
 }
 .welcome-content{
     display: block;
@@ -442,5 +460,26 @@ main::-webkit-scrollbar-thumb:hover {
     .experience-item {
         grid-template-columns: 1fr;
         gap: 8px;
+    }
+}
+
+/* Scroll Reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.reveal-left {
+    transform: translateX(-30px);
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translate(0);
+}
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
 }
