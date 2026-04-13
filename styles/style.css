@@ -195,19 +195,18 @@ main::-webkit-scrollbar-thumb:hover {
 }
 #sidebar ul li.active a{
     color: var(--accent-clr);
-
-    svg{
-        fill: var(--accent-clr);
-    }
+}
+#sidebar ul li.active a svg{
+    fill: var(--accent-clr);
 }
 #sidebar > ul > li:first-child {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     margin-bottom: 16px;
-    .logo {
-        font-weight: 600;
-    }
+}
+#sidebar > ul > li:first-child .logo {
+    font-weight: 600;
 }
 #sidebar a, #sidebar .logo {
     display: flex;
@@ -367,8 +366,6 @@ main::-webkit-scrollbar-thumb:hover {
     opacity: 0;
     transform: scale(0.95);
     pointer-events: none;
-    position: absolute;
-    visibility: hidden;
 }
 .project_item {
     transition: opacity 0.3s ease, transform 0.3s ease;

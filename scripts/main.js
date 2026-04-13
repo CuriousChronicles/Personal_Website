@@ -55,7 +55,13 @@ if (filterBtns.length) {
             document.querySelectorAll('.project_item').forEach(card => {
                 const categories = card.dataset.category || '';
                 const matches = filter === 'all' || categories.includes(filter);
-                card.classList.toggle('hidden', !matches);
+                if (matches) {
+                    card.style.display = '';
+                    requestAnimationFrame(() => card.classList.remove('hidden'));
+                } else {
+                    card.classList.add('hidden');
+                    setTimeout(() => { card.style.display = 'none'; }, 300);
+                }
             });
         });
     });
