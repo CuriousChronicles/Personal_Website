@@ -43,6 +43,24 @@ themeSwitch.addEventListener('click', () => {
     darkMode !== "active" ? enableDarkMode() : disableDarkMode();
 });
 
+/* Project Filter */
+const filterBtns = document.querySelectorAll('.filter-btn');
+if (filterBtns.length) {
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filter = btn.dataset.filter;
+            document.querySelectorAll('.project_item').forEach(card => {
+                const categories = card.dataset.category || '';
+                const matches = filter === 'all' || categories.includes(filter);
+                card.classList.toggle('hidden', !matches);
+            });
+        });
+    });
+}
+
 /* Scroll Reveal */
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
