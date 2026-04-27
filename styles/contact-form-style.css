@@ -67,3 +67,32 @@ form {
     height: 16px;
     fill: var(--text-clr);
 }
+form.hidden {
+    display: none;
+}
+.thank-you {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1em;
+    gap: 0.5em;
+    animation: fadeUp 0.4s ease;
+}
+.thank-you.hidden {
+    display: none;
+}
+.thank-you svg {
+    fill: var(--accent-clr);
+    margin-bottom: 0.5em;
+}
+.thank-you h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+.thank-you p {
+    color: var(--secondary-text-clr);
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

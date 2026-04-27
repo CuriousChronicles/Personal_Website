@@ -79,3 +79,20 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.10 });
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* Contact Form */
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            body: new FormData(contactForm)
+        });
+        const json = await res.json();
+        if (json.success) {
+            contactForm.classList.add('hidden');
+            document.getElementById('thank-you').classList.remove('hidden');
+        }
+    });
+}
