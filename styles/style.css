@@ -313,6 +313,43 @@ main::-webkit-scrollbar-thumb:hover {
     display: block;
 }
 
+/* Keeps the mobile sidebar footer inside the visible dynamic viewport and clear of safe-area browser UI. */
+@media (max-width: 750px) {
+    #sidebar {
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-bottom: max(20px, calc(12px + env(safe-area-inset-bottom)));
+    }
+
+    #sidebar.close {
+        padding-bottom: max(20px, calc(12px + env(safe-area-inset-bottom)));
+    }
+
+    .sidebar-footer {
+        flex-shrink: 0;
+        padding-bottom: 0;
+    }
+
+    #sidebar.close .sidebar-footer {
+        padding-bottom: 0;
+    }
+
+    .social-links a,
+    #theme-switch,
+    #sidebar_toggle {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .social-links a,
+    #theme-switch {
+        width: 44px;
+        height: 44px;
+    }
+}
+
 /* Projects Section */
 .page-header {
     width: 100%;
