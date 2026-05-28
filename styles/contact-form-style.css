@@ -1,12 +1,13 @@
 .container {
-    display: inline-block;
-    height: 100vh;
+    display: block;
+    min-height: 100vh;
     padding: 1em;
 }
 form {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     padding: 1em;
+    width: min(100%, 420px);
 }
 .form-header h2{
     font-size: 1.5rem;
@@ -20,10 +21,11 @@ form {
     margin-bottom: 1em;
 }
 .contact-input {
-    width: 300px;
-    height: 40px;
+    width: 100%;
+    min-height: 44px;
     outline: none;
-    padding-left: 25px;
+    padding: 0 20px;
+    font-size: 16px;
     font-weight: 500;
     border-radius: 50px;
     margin-bottom: 10px;
@@ -62,6 +64,10 @@ form {
 .submit-btn:hover {
     background-color: var(--accent-clr);
 }
+.submit-btn:active,
+.submit-btn:focus-visible {
+    background-color: var(--accent-clr);
+}
 .submit-btn svg {
     width: 16px;
     height: 16px;
@@ -95,4 +101,16 @@ form.hidden {
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Prevents the contact form from overflowing the narrow mobile content column and keeps controls tap-friendly. */
+@media (max-width: 750px) {
+    .container {
+        width: 100%;
+        padding: 0;
+    }
+
+    form {
+        padding: 0;
+    }
 }
