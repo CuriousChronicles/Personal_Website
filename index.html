@@ -168,6 +168,21 @@
                 </div>
             </div>
         </section>
+
+        <section class="pi-message-section reveal">
+            <h2 class="section-title">Send a message to my desk</h2>
+            <p class="pi-blurb">There's a Raspberry Pi sitting on my desk. Send it a message and it'll light up to let me know.</p>
+            <form id="pi-form" class="pi-form">
+                <input type="text" class="pi-input" name="name" placeholder="Your name (optional)" maxlength="30" autocomplete="off">
+                <input type="text" class="pi-input" name="message" placeholder="Your message" maxlength="140" required autocomplete="off">
+                <input type="text" class="pi-honeypot" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <button type="submit" class="pi-submit-btn">
+                    Send
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg>
+                </button>
+                <p id="pi-status" class="pi-status" role="status"></p>
+            </form>
+        </section>
     </main>
 </body>
 </html>

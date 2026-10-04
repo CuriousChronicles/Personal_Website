@@ -650,6 +650,86 @@ main::-webkit-scrollbar-thumb:hover {
     }
 }
 
+/* Pi Message Section */
+.pi-message-section {
+    width: 100%;
+    max-width: 1400px;
+    padding: 40px 0;
+}
+.pi-message-section .section-title {
+    margin-bottom: 0;
+}
+.pi-form {
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 420px);
+}
+.pi-input {
+    width: 100%;
+    min-height: 44px;
+    outline: none;
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+.pi-input:focus {
+    outline: solid;
+    border-color: var(--accent-clr);
+    box-shadow: 0 0 5px var(--accent-clr);
+}
+.pi-input::placeholder {
+    color: var(--secondary-text-clr);
+    font-style: italic;
+}
+/* Kept off-screen rather than display: none so bots still fill it in. */
+.pi-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+.pi-submit-btn {
+    font-family: Bitcount Single, monospace;
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-clr);
+    background-color: var(--line-clr);
+    box-shadow: 0 4px 8px var(--shadow-clr);
+    gap: 10px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    width: fit-content;
+    margin-top: 10px;
+}
+.pi-submit-btn:hover,
+.pi-submit-btn:active,
+.pi-submit-btn:focus-visible {
+    background-color: var(--accent-clr);
+}
+.pi-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--line-clr);
+}
+.pi-submit-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--text-clr);
+}
+.pi-status {
+    min-height: 1.5rem;
+}
+.pi-status.success {
+    color: var(--accent-clr);
+}
+
 /* Scroll Reveal */
 .reveal {
     opacity: 0;

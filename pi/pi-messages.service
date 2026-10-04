@@ -1,0 +1,15 @@
+[Unit]
+Description=Website message listener
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/pi-messages
+EnvironmentFile=/home/pi/pi-messages/.env
+ExecStart=/home/pi/pi-messages/.venv/bin/python listener.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

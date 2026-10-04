@@ -96,3 +96,39 @@ if (contactForm) {
         }
     });
 }
+
+/* Pi Message Form */
+const piForm = document.getElementById('pi-form');
+if (piForm) {
+    const piStatus = document.getElementById('pi-status');
+    const piButton = piForm.querySelector('button[type="submit"]');
+
+    piForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        piStatus.classList.remove('success');
+        piStatus.textContent = 'Sending...';
+        piButton.disabled = true;
+
+        try {
+            const res = await fetch('/api/message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(Object.fromEntries(new FormData(piForm)))
+            });
+            const json = await res.json().catch(() => ({}));
+            if (res.ok && json.ok) {
+                piForm.reset();
+                piStatus.classList.add('success');
+                piStatus.textContent = 'Sent! My desk just lit up.';
+            } else if (res.status === 429) {
+                piStatus.textContent = 'Slow down a little, try again in a minute.';
+            } else {
+                piStatus.textContent = json.error || 'Something went wrong, please try again.';
+            }
+        } catch {
+            piStatus.textContent = 'Could not reach the server, please try again.';
+        } finally {
+            piButton.disabled = false;
+        }
+    });
+}
