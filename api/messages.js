@@ -1,5 +1,5 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
-import { json, withRedis, QUEUE_KEY } from './_lib.js';
+import { json, withRedis, QUEUE_KEY, LAST_SEEN_KEY, BLINKS_KEY } from './_lib.js';
 
 const BATCH_SIZE = 10;
 
@@ -21,6 +21,11 @@ export async function GET(request) {
     }
     return withRedis(async (redis) => {
         const raw = await redis.lPopCount(QUEUE_KEY, BATCH_SIZE);
+        /* Every poll doubles as a heartbeat, which is what the page's online light reads. */
+        await redis.set(LAST_SEEN_KEY, String(Date.now()));
+        if (raw && raw.length) {
+            await redis.incrBy(BLINKS_KEY, raw.length);
+        }
         return json({ messages: (raw || []).map((item) => JSON.parse(item)) });
     });
 }

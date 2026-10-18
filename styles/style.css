@@ -650,38 +650,221 @@ main::-webkit-scrollbar-thumb:hover {
     }
 }
 
-/* Pi Message Section */
+/* Pi Message Section: a terminal that stays dark in both themes, like a real one. */
 .pi-message-section {
     width: 100%;
     max-width: 1400px;
     padding: 40px 0;
+    --term-bg: #0f1117;
+    --term-bar: #1b1e27;
+    --term-line: #2a2e3a;
+    --term-text: #d6d9e0;
+    --term-dim: #7d8394;
+    --term-green: #4ade80;
+    --led-off: #213d2c;
+    --led-on: #5dff8f;
 }
 .pi-message-section .section-title {
     margin-bottom: 0;
 }
-.pi-form {
+.pi-terminal {
+    width: min(100%, 640px);
+    margin-top: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--term-bg);
+    color: var(--term-text);
+    box-shadow: 0 10px 30px var(--shadow-clr);
+    border: 1px solid var(--term-line);
+}
+.pi-terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 14px;
+    background-color: var(--term-bar);
+    border-bottom: 1px solid var(--term-line);
+}
+.pi-terminal-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: #ff5f57;
+}
+.pi-terminal-dot:nth-child(2) { background-color: #febc2e; }
+.pi-terminal-dot:nth-child(3) { background-color: #28c840; }
+.pi-terminal-title {
+    margin-left: 8px;
+    font-size: 0.85rem;
+    color: var(--term-dim);
+}
+.pi-terminal-body {
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    width: min(100%, 420px);
+    gap: 16px;
 }
-.pi-input {
-    width: 100%;
+.pi-board-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.pi-board {
+    width: 220px;
+    flex-shrink: 0;
+    height: auto;
+}
+.pi-led {
+    fill: var(--led-off);
+    transition: fill 0.05s linear;
+}
+.pi-led.on {
+    fill: var(--led-on);
+    filter: drop-shadow(0 0 6px var(--led-on));
+}
+.pi-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.95rem;
+}
+.pi-stats div {
+    display: flex;
+    gap: 10px;
+}
+.pi-stats dt {
+    color: var(--term-dim);
+    width: 110px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.pi-stats dt::after {
+    content: ":";
+}
+.pi-stats dd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.pi-status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--term-dim);
+}
+#pi-online.online .pi-status-dot {
+    background-color: var(--term-green);
+    box-shadow: 0 0 6px var(--term-green);
+}
+#pi-online.online .pi-online-text {
+    color: var(--term-green);
+}
+#pi-online.offline .pi-status-dot {
+    background-color: #ff5f57;
+}
+.pi-pokes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.pi-poke {
+    font-family: inherit;
+    font-size: 0.95rem;
     min-height: 44px;
+    padding: 8px 16px;
+    color: var(--term-text);
+    background-color: var(--term-bar);
+    border: 1px solid var(--term-line);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.pi-poke:hover,
+.pi-poke:focus-visible {
+    border-color: var(--term-green);
     outline: none;
-    padding: 0 20px;
+}
+.pi-poke:active {
+    transform: translateY(1px);
+}
+.pi-poke:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.pi-log {
+    list-style: none;
+    min-height: 5.5em;
+    max-height: 9em;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    border-top: 1px dashed var(--term-line);
+    padding-top: 10px;
+}
+.pi-log li {
+    overflow-wrap: anywhere;
+}
+.pi-log .pi-log-cmd::before {
+    content: "$ ";
+    color: var(--term-green);
+}
+.pi-log .pi-log-dim {
+    color: var(--term-dim);
+}
+.pi-log .pi-log-ok {
+    color: var(--term-green);
+}
+.pi-log .pi-log-err {
+    color: #ff7b72;
+}
+.pi-prompt {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.pi-prompt-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+}
+.pi-prompt-sign {
+    color: var(--term-green);
+    white-space: nowrap;
+}
+.pi-prompt-input {
+    flex: 1;
+    min-width: 0;
+    min-height: 40px;
+    font-family: inherit;
     font-size: 16px;
-    font-weight: 500;
-    border-radius: 50px;
-    margin-bottom: 10px;
+    color: var(--term-text);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--term-line);
+    caret-color: var(--term-green);
+    outline: none;
 }
-.pi-input:focus {
-    outline: solid;
-    border-color: var(--accent-clr);
-    box-shadow: 0 0 5px var(--accent-clr);
+.pi-prompt-input:focus {
+    border-bottom-color: var(--term-green);
 }
-.pi-input::placeholder {
-    color: var(--secondary-text-clr);
-    font-style: italic;
+.pi-prompt-input::placeholder {
+    color: var(--term-dim);
+}
+.pi-send {
+    min-width: 44px;
+    min-height: 40px;
+    font-size: 1.1rem;
+    color: var(--term-text);
+    background-color: var(--term-bar);
+    border: 1px solid var(--term-line);
+    border-radius: 8px;
+    cursor: pointer;
+}
+.pi-send:hover,
+.pi-send:focus-visible {
+    border-color: var(--term-green);
+    outline: none;
 }
 /* Kept off-screen rather than display: none so bots still fill it in. */
 .pi-honeypot {
@@ -691,43 +874,19 @@ main::-webkit-scrollbar-thumb:hover {
     height: 1px;
     opacity: 0;
 }
-.pi-submit-btn {
-    font-family: Bitcount Single, monospace;
-    display: flex;
-    align-items: center;
-    padding: 15px 30px;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text-clr);
-    background-color: var(--line-clr);
-    box-shadow: 0 4px 8px var(--shadow-clr);
-    gap: 10px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    width: fit-content;
-    margin-top: 10px;
-}
-.pi-submit-btn:hover,
-.pi-submit-btn:active,
-.pi-submit-btn:focus-visible {
-    background-color: var(--accent-clr);
-}
-.pi-submit-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: var(--line-clr);
-}
-.pi-submit-btn svg {
-    width: 16px;
-    height: 16px;
-    fill: var(--text-clr);
-}
-.pi-status {
-    min-height: 1.5rem;
-}
-.pi-status.success {
-    color: var(--accent-clr);
+/* Stacks the board above its stats so the terminal fits the narrow mobile column. */
+@media (max-width: 600px) {
+    .pi-board-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .pi-board {
+        width: 100%;
+        max-width: 260px;
+    }
+    .pi-terminal-body {
+        padding: 14px;
+    }
 }
 
 /* Scroll Reveal */

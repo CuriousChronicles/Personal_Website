@@ -1,6 +1,8 @@
 import { createClient } from 'redis';
 
 export const QUEUE_KEY = 'pi:queue';
+export const LAST_SEEN_KEY = 'pi:lastSeen';
+export const BLINKS_KEY = 'pi:blinks';
 
 /* One connection per function instance, reused across requests and rebuilt if it drops. */
 let clientPromise = null;
@@ -17,12 +19,12 @@ function getRedis() {
     return clientPromise;
 }
 
-export function json(body, status = 200) {
+export function json(body, status = 200, cacheControl = 'no-store') {
     return new Response(JSON.stringify(body), {
         status,
         headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'no-store'
+            'Cache-Control': cacheControl
         }
     });
 }
