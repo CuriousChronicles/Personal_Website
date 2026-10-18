@@ -1,5 +1,5 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
-import { redis, json, QUEUE_KEY } from './_lib.js';
+import { redis, json, withRedis, QUEUE_KEY } from './_lib.js';
 
 const BATCH_SIZE = 10;
 
@@ -19,6 +19,8 @@ export async function GET(request) {
     if (!isAuthorised(request)) {
         return json({ error: 'Unauthorised.' }, 401);
     }
-    const messages = await redis.lpop(QUEUE_KEY, BATCH_SIZE);
-    return json({ messages: messages || [] });
+    return withRedis(async () => {
+        const messages = await redis.lpop(QUEUE_KEY, BATCH_SIZE);
+        return json({ messages: messages || [] });
+    });
 }

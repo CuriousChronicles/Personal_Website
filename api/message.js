@@ -1,4 +1,4 @@
-import { redis, json, QUEUE_KEY } from './_lib.js';
+import { redis, json, withRedis, QUEUE_KEY } from './_lib.js';
 
 const MAX_MESSAGE = 140;
 const MAX_NAME = 30;
@@ -36,21 +36,23 @@ export async function POST(request) {
         return json({ ok: false, error: 'Message is required.' }, 400);
     }
 
-    const ip = (request.headers.get('x-forwarded-for') || 'unknown').split(',')[0].trim();
-    const rateKey = `rl:${ip}`;
-    const count = await redis.incr(rateKey);
-    if (count === 1) {
-        await redis.expire(rateKey, 60);
-    }
-    if (count > MAX_PER_MINUTE) {
-        return json({ ok: false, error: 'Too many messages, try again in a minute.' }, 429);
-    }
+    return withRedis(async () => {
+        const ip = (request.headers.get('x-forwarded-for') || 'unknown').split(',')[0].trim();
+        const rateKey = `rl:${ip}`;
+        const count = await redis.incr(rateKey);
+        if (count === 1) {
+            await redis.expire(rateKey, 60);
+        }
+        if (count > MAX_PER_MINUTE) {
+            return json({ ok: false, error: 'Too many messages, try again in a minute.' }, 429);
+        }
 
-    /* Stops a flood from filling Redis while the Pi is switched off. */
-    if (await redis.llen(QUEUE_KEY) >= MAX_QUEUE) {
-        return json({ ok: false, error: 'The queue is full, try again later.' }, 503);
-    }
+        /* Stops a flood from filling Redis while the Pi is switched off. */
+        if (await redis.llen(QUEUE_KEY) >= MAX_QUEUE) {
+            return json({ ok: false, error: 'The queue is full, try again later.' }, 503);
+        }
 
-    await redis.rpush(QUEUE_KEY, { name, message, ts: Date.now() });
-    return json({ ok: true });
+        await redis.rpush(QUEUE_KEY, { name, message, ts: Date.now() });
+        return json({ ok: true });
+    });
 }
