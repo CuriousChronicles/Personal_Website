@@ -1,4 +1,4 @@
-import { redis, json, withRedis, QUEUE_KEY } from './_lib.js';
+import { json, withRedis, QUEUE_KEY } from './_lib.js';
 
 const MAX_MESSAGE = 140;
 const MAX_NAME = 30;
@@ -36,7 +36,7 @@ export async function POST(request) {
         return json({ ok: false, error: 'Message is required.' }, 400);
     }
 
-    return withRedis(async () => {
+    return withRedis(async (redis) => {
         const ip = (request.headers.get('x-forwarded-for') || 'unknown').split(',')[0].trim();
         const rateKey = `rl:${ip}`;
         const count = await redis.incr(rateKey);
@@ -48,11 +48,11 @@ export async function POST(request) {
         }
 
         /* Stops a flood from filling Redis while the Pi is switched off. */
-        if (await redis.llen(QUEUE_KEY) >= MAX_QUEUE) {
+        if (await redis.lLen(QUEUE_KEY) >= MAX_QUEUE) {
             return json({ ok: false, error: 'The queue is full, try again later.' }, 503);
         }
 
-        await redis.rpush(QUEUE_KEY, { name, message, ts: Date.now() });
+        await redis.rPush(QUEUE_KEY, JSON.stringify({ name, message, ts: Date.now() }));
         return json({ ok: true });
     });
 }
