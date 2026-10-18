@@ -3,17 +3,58 @@
 import os
 import time
 from datetime import datetime
+from pathlib import Path
 
 import requests
-from gpiozero import LED
 
 API_URL = os.environ["API_URL"].rstrip("/")
 PI_TOKEN = os.environ["PI_TOKEN"]
-LED_PIN = int(os.environ.get("LED_PIN", "17"))
+LED_PIN = os.environ.get("LED_PIN", "onboard")
 POLL_SECONDS = float(os.environ.get("POLL_SECONDS", "10"))
 MAX_BACKOFF_SECONDS = 300
 
-led = LED(LED_PIN)
+
+class OnboardLED:
+    """The board's green activity LED, driven through sysfs.
+
+    It normally flickers with SD card activity, so the original trigger is put back after each blink.
+    Writing to it needs permission; the systemd unit grants that on start.
+    """
+
+    def __init__(self):
+        # Newer Raspberry Pi OS calls it ACT, older releases led0.
+        self.path = next(
+            (p for p in (Path("/sys/class/leds/ACT"), Path("/sys/class/leds/led0")) if p.exists()),
+            None,
+        )
+        if self.path is None:
+            raise RuntimeError("No onboard activity LED found under /sys/class/leds")
+        trigger = (self.path / "trigger").read_text()
+        self.default_trigger = trigger.split("[", 1)[1].split("]", 1)[0] if "[" in trigger else "none"
+
+    def _write(self, name, value):
+        (self.path / name).write_text(value)
+
+    def blink(self, on_time, off_time, n, background=False):
+        self._write("trigger", "none")
+        try:
+            for _ in range(n):
+                self._write("brightness", "1")
+                time.sleep(on_time)
+                self._write("brightness", "0")
+                time.sleep(off_time)
+        finally:
+            self._write("trigger", self.default_trigger)
+
+
+def make_led():
+    if LED_PIN == "onboard":
+        return OnboardLED()
+    from gpiozero import LED
+    return LED(int(LED_PIN))
+
+
+led = make_led()
 
 
 def on_message(msg):
@@ -35,7 +76,8 @@ def fetch_messages():
 
 
 def main():
-    print(f"Listening for messages from {API_URL} (LED on GPIO{LED_PIN})", flush=True)
+    where = "onboard LED" if LED_PIN == "onboard" else f"LED on GPIO{LED_PIN}"
+    print(f"Listening for messages from {API_URL} ({where})", flush=True)
     delay = POLL_SECONDS
     while True:
         try:
