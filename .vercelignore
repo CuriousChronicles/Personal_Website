@@ -1,0 +1,6 @@
+pi/
+.venv/
+__pycache__/
+.github/
+ReadMe.txt
+CNAME

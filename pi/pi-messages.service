@@ -1,0 +1,19 @@
+[Unit]
+Description=Website message listener
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=admin
+# Lets the listener drive the OLED on /dev/i2c-1.
+SupplementaryGroups=i2c
+WorkingDirectory=/home/admin/pi-messages
+# The + runs this one step as root so the listener can drive the onboard LED.
+ExecStartPre=+/bin/sh -c 'for d in /sys/class/leds/ACT /sys/class/leds/led0; do [ -d $d ] && chmod a+w $d/trigger $d/brightness; done; true'
+EnvironmentFile=/home/admin/pi-messages/.env
+ExecStart=/home/admin/pi-messages/.venv/bin/python listener.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

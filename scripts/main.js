@@ -96,3 +96,156 @@ if (contactForm) {
         }
     });
 }
+
+/* Pi Desk Terminal */
+const piForm = document.getElementById('pi-form');
+if (piForm) {
+    /* [on, off] milliseconds per flash. Keep in step with PATTERNS in pi/listener.py. */
+    const PI_PATTERNS = {
+        wave: Array(3).fill([500, 500]),
+        heart: Array(3).fill([[150, 150], [150, 600]]).flat(),
+        party: Array(12).fill([80, 80]),
+        message: Array(3).fill([300, 300])
+    };
+    const POKE_LABELS = { wave: 'waved', heart: 'sent a heart', party: 'started a party' };
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const piLed = document.getElementById('pi-led');
+    const piNote = document.getElementById('pi-note');
+    const piOnline = document.getElementById('pi-online');
+    const piOnlineText = piOnline.querySelector('.pi-online-text');
+    const piLastSeen = document.getElementById('pi-last-seen');
+    const piBlinks = document.getElementById('pi-blinks');
+    const pokeButtons = document.querySelectorAll('.pi-poke');
+    let lastSeen = null;
+    let isOnline = false;
+    let statusKnown = false;
+    let playing = false;
+    let playToken = 0;
+
+    const showNote = (text, kind) => {
+        piNote.textContent = text;
+        piNote.className = `pi-note ${kind || ''}`;
+    };
+
+    /* Plays a pattern on the drawn LED, cancelling whatever was playing. */
+    const playPattern = (pattern) => {
+        const token = ++playToken;
+        let i = 0;
+        playing = true;
+        const step = () => {
+            if (token !== playToken) return;
+            if (i >= pattern.length) {
+                piLed.classList.remove('on');
+                playing = false;
+                return;
+            }
+            const [on, off] = pattern[i++];
+            piLed.classList.add('on');
+            setTimeout(() => {
+                if (token !== playToken) return;
+                piLed.classList.remove('on');
+                setTimeout(step, off);
+            }, on);
+        };
+        step();
+    };
+
+    const timeAgo = (ms) => {
+        const s = Math.max(0, Math.round(ms / 1000));
+        if (s < 60) return `${s}s ago`;
+        const m = Math.round(s / 60);
+        if (m < 60) return `${m}m ago`;
+        const h = Math.round(m / 60);
+        return h < 48 ? `${h}h ago` : `${Math.round(h / 24)}d ago`;
+    };
+
+    const renderStatus = () => {
+        if (!statusKnown) return;
+        piOnline.classList.toggle('online', isOnline);
+        piOnline.classList.toggle('offline', !isOnline && lastSeen !== undefined);
+        piOnlineText.textContent = lastSeen === undefined ? 'unknown' : isOnline ? 'online' : 'offline';
+        piLastSeen.textContent = lastSeen ? timeAgo(Date.now() - lastSeen) : '-';
+    };
+
+    const refreshStatus = async () => {
+        try {
+            const res = await fetch('/api/status');
+            if (!res.ok) throw new Error(res.status);
+            const status = await res.json();
+            lastSeen = status.lastSeen;
+            isOnline = status.online;
+            piBlinks.textContent = status.blinks.toLocaleString();
+        } catch {
+            lastSeen = undefined;
+            isOnline = false;
+        }
+        statusKnown = true;
+        renderStatus();
+    };
+
+    const send = async (payload, describe) => {
+        showNote('Sending...');
+        pokeButtons.forEach(b => b.disabled = true);
+        try {
+            const res = await fetch('/api/message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...payload,
+                    name: piForm.elements.name.value,
+                    website: piForm.elements.website.value
+                })
+            });
+            const json = await res.json().catch(() => ({}));
+            if (res.ok && json.ok) {
+                playPattern(PI_PATTERNS[payload.poke || 'message']);
+                showNote(isOnline
+                    ? `${describe} The real light blinks within ~10s.`
+                    : `${describe} The Pi is offline, so it'll blink when it wakes up.`, 'ok');
+                return true;
+            }
+            showNote(res.status === 429
+                ? 'Too many pokes! Try again in a minute.'
+                : `Hmm, ${json.error || 'something went wrong, try again'}.`, 'err');
+        } catch {
+            showNote("Couldn't reach the server, try again in a bit.", 'err');
+        } finally {
+            pokeButtons.forEach(b => b.disabled = false);
+        }
+        return false;
+    };
+
+    pokeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const poke = btn.dataset.poke;
+            send({ poke }, `You ${POKE_LABELS[poke]}!`);
+        });
+    });
+
+    piForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = piForm.elements.message;
+        const message = input.value.trim();
+        if (!message) {
+            input.focus();
+            return;
+        }
+        if (await send({ message }, 'Note sent!')) input.value = '';
+    });
+
+    /* The real ACT LED flickers with disk activity; a faint idle flicker makes the drawing feel alive. */
+    if (!reducedMotion) {
+        setInterval(() => {
+            if (isOnline && !playing && Math.random() < 0.35) {
+                playPattern([[60, 0]]);
+            }
+        }, 1500);
+    }
+
+    refreshStatus();
+    setInterval(() => {
+        if (!document.hidden) refreshStatus();
+    }, 20000);
+    setInterval(renderStatus, 1000);
+}

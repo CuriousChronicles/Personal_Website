@@ -1,0 +1,31 @@
+import { createHash, timingSafeEqual } from 'node:crypto';
+import { json, withRedis, QUEUE_KEY, LAST_SEEN_KEY, BLINKS_KEY } from './_lib.js';
+
+const BATCH_SIZE = 10;
+
+function isAuthorised(request) {
+    const expected = process.env.PI_TOKEN;
+    if (!expected) return false;
+    const header = request.headers.get('authorization') || '';
+    const given = header.startsWith('Bearer ') ? header.slice(7) : '';
+    /* Hashing first gives equal-length buffers, which timingSafeEqual requires. */
+    const a = createHash('sha256').update(given).digest();
+    const b = createHash('sha256').update(expected).digest();
+    return timingSafeEqual(a, b);
+}
+
+/* Polled by the Raspberry Pi. Popping removes the messages, so each one is delivered at most once. */
+export async function GET(request) {
+    if (!isAuthorised(request)) {
+        return json({ error: 'Unauthorised.' }, 401);
+    }
+    return withRedis(async (redis) => {
+        const raw = await redis.lPopCount(QUEUE_KEY, BATCH_SIZE);
+        /* Every poll doubles as a heartbeat, which is what the page's online light reads. */
+        await redis.set(LAST_SEEN_KEY, String(Date.now()));
+        if (raw && raw.length) {
+            await redis.incrBy(BLINKS_KEY, raw.length);
+        }
+        return json({ messages: (raw || []).map((item) => JSON.parse(item)) });
+    });
+}
