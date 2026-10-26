@@ -111,7 +111,7 @@ if (piForm) {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const piLed = document.getElementById('pi-led');
-    const piLog = document.getElementById('pi-log');
+    const piNote = document.getElementById('pi-note');
     const piOnline = document.getElementById('pi-online');
     const piOnlineText = piOnline.querySelector('.pi-online-text');
     const piLastSeen = document.getElementById('pi-last-seen');
@@ -123,14 +123,9 @@ if (piForm) {
     let playing = false;
     let playToken = 0;
 
-    const logLine = (text, kind) => {
-        const li = document.createElement('li');
-        li.textContent = text;
-        if (kind) li.className = `pi-log-${kind}`;
-        piLog.querySelector('.pi-log-dim:only-child')?.remove();
-        piLog.appendChild(li);
-        while (piLog.children.length > 12) piLog.firstElementChild.remove();
-        piLog.scrollTop = piLog.scrollHeight;
+    const showNote = (text, kind) => {
+        piNote.textContent = text;
+        piNote.className = `pi-note ${kind || ''}`;
     };
 
     /* Plays a pattern on the drawn LED, cancelling whatever was playing. */
@@ -190,7 +185,7 @@ if (piForm) {
     };
 
     const send = async (payload, describe) => {
-        logLine(describe, 'cmd');
+        showNote('Sending...');
         pokeButtons.forEach(b => b.disabled = true);
         try {
             const res = await fetch('/api/message', {
@@ -205,16 +200,16 @@ if (piForm) {
             const json = await res.json().catch(() => ({}));
             if (res.ok && json.ok) {
                 playPattern(PI_PATTERNS[payload.poke || 'message']);
-                logLine(isOnline
-                    ? 'queued. the real LED blinks within ~10s'
-                    : 'queued. the Pi is offline, so it will blink when it wakes up', 'ok');
+                showNote(isOnline
+                    ? `${describe} The real light blinks within ~10s.`
+                    : `${describe} The Pi is offline, so it'll blink when it wakes up.`, 'ok');
                 return true;
             }
-            logLine(res.status === 429
-                ? 'error: too many pokes, try again in a minute'
-                : `error: ${json.error || 'something went wrong, try again'}`, 'err');
+            showNote(res.status === 429
+                ? 'Too many pokes! Try again in a minute.'
+                : `Hmm, ${json.error || 'something went wrong, try again'}.`, 'err');
         } catch {
-            logLine('error: could not reach the server', 'err');
+            showNote("Couldn't reach the server, try again in a bit.", 'err');
         } finally {
             pokeButtons.forEach(b => b.disabled = false);
         }
@@ -224,7 +219,7 @@ if (piForm) {
     pokeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const poke = btn.dataset.poke;
-            send({ poke }, `blink --pattern ${poke}   # ${POKE_LABELS[poke]}`);
+            send({ poke }, `You ${POKE_LABELS[poke]}!`);
         });
     });
 
@@ -236,7 +231,7 @@ if (piForm) {
             input.focus();
             return;
         }
-        if (await send({ message }, `say "${message}"`)) input.value = '';
+        if (await send({ message }, 'Note sent!')) input.value = '';
     });
 
     /* The real ACT LED flickers with disk activity; a faint idle flicker makes the drawing feel alive. */

@@ -172,64 +172,61 @@
         <section class="pi-message-section reveal">
             <h2 class="section-title">Poke my desk</h2>
             <p class="pi-blurb">There's a Raspberry Pi on my desk. Poke it and its little green light blinks for real.</p>
-            <div class="pi-terminal">
-                <div class="pi-terminal-bar" aria-hidden="true">
-                    <span class="pi-terminal-dot"></span><span class="pi-terminal-dot"></span><span class="pi-terminal-dot"></span>
-                    <span class="pi-terminal-title">visitor@jayti-desk: ~</span>
+            <div class="pi-card">
+                <div class="pi-scene">
+                    <svg class="pi-board" viewBox="0 0 240 150" role="img" aria-label="Drawing of the Raspberry Pi on my desk">
+                        <defs>
+                            <pattern id="pi-gpio-pins" width="9" height="9" patternUnits="userSpaceOnUse">
+                                <rect x="2" y="2" width="5" height="5" fill="#d9b24c"/>
+                            </pattern>
+                            <radialGradient id="pi-led-glow">
+                                <stop offset="0" stop-color="#5dff8f" stop-opacity="0.9"/>
+                                <stop offset="1" stop-color="#5dff8f" stop-opacity="0"/>
+                            </radialGradient>
+                        </defs>
+                        <rect x="4" y="4" width="200" height="142" rx="10" fill="#1d6b42"/>
+                        <circle cx="16" cy="16" r="5" fill="#0c0e13" stroke="#d9b24c" stroke-width="2"/>
+                        <circle cx="16" cy="134" r="5" fill="#0c0e13" stroke="#d9b24c" stroke-width="2"/>
+                        <circle cx="174" cy="16" r="5" fill="#0c0e13" stroke="#d9b24c" stroke-width="2"/>
+                        <circle cx="174" cy="134" r="5" fill="#0c0e13" stroke="#d9b24c" stroke-width="2"/>
+                        <rect x="30" y="8" width="180" height="20" fill="#11151c"/>
+                        <rect x="30" y="8" width="180" height="20" fill="url(#pi-gpio-pins)"/>
+                        <rect x="70" y="52" width="46" height="46" rx="3" fill="#2b2f38"/>
+                        <text x="93" y="79" text-anchor="middle" font-size="9" fill="#8a909c" font-family="monospace">BCM</text>
+                        <rect x="130" y="58" width="22" height="34" rx="2" fill="#23262e"/>
+                        <rect x="196" y="40" width="40" height="30" rx="2" fill="#b9c0c9"/>
+                        <rect x="196" y="78" width="40" height="30" rx="2" fill="#b9c0c9"/>
+                        <rect x="196" y="114" width="40" height="26" rx="2" fill="#a4abb4"/>
+                        <rect x="40" y="128" width="22" height="14" rx="2" fill="#b9c0c9"/>
+                        <circle cx="22" cy="58" r="5" fill="#ff4d4d" class="pi-pwr-led"/>
+                        <text x="32" y="61" font-size="8" fill="#cfe8d8" font-family="monospace">PWR</text>
+                        <circle cx="22" cy="78" r="18" fill="url(#pi-led-glow)" class="pi-led-halo"/>
+                        <circle id="pi-led" cx="22" cy="78" r="5" class="pi-led"/>
+                        <text x="32" y="81" font-size="8" fill="#cfe8d8" font-family="monospace">ACT</text>
+                    </svg>
+                    <span class="pi-scene-tag" aria-hidden="true">&#8593; that ACT light is real</span>
                 </div>
-                <div class="pi-terminal-body">
-                    <div class="pi-board-row">
-                        <svg class="pi-board" viewBox="0 0 240 150" role="img" aria-label="Drawing of the Raspberry Pi on my desk">
-                            <defs>
-                                <pattern id="pi-gpio-pins" width="9" height="9" patternUnits="userSpaceOnUse">
-                                    <rect x="2" y="2" width="5" height="5" fill="#d9b24c"/>
-                                </pattern>
-                            </defs>
-                            <rect x="4" y="4" width="200" height="142" rx="10" fill="#1d6b42"/>
-                            <circle cx="16" cy="16" r="5" fill="#0c0e13" stroke="#d9b24c" stroke-width="2"/>
-                            <circle cx="16" cy="134" r="5" fill="#0c0e13" stroke="#d9b24c" stroke-width="2"/>
-                            <circle cx="174" cy="16" r="5" fill="#0c0e13" stroke="#d9b24c" stroke-width="2"/>
-                            <circle cx="174" cy="134" r="5" fill="#0c0e13" stroke="#d9b24c" stroke-width="2"/>
-                            <rect x="30" y="8" width="180" height="20" fill="#11151c"/>
-                            <rect x="30" y="8" width="180" height="20" fill="url(#pi-gpio-pins)"/>
-                            <rect x="70" y="52" width="46" height="46" rx="3" fill="#2b2f38"/>
-                            <text x="93" y="79" text-anchor="middle" font-size="9" fill="#8a909c" font-family="monospace">BCM</text>
-                            <rect x="130" y="58" width="22" height="34" rx="2" fill="#23262e"/>
-                            <rect x="196" y="40" width="40" height="30" rx="2" fill="#b9c0c9"/>
-                            <rect x="196" y="78" width="40" height="30" rx="2" fill="#b9c0c9"/>
-                            <rect x="196" y="114" width="40" height="26" rx="2" fill="#a4abb4"/>
-                            <rect x="40" y="128" width="22" height="14" rx="2" fill="#b9c0c9"/>
-                            <circle cx="22" cy="58" r="5" fill="#ff4d4d" class="pi-pwr-led"/>
-                            <text x="32" y="61" font-size="8" fill="#cfe8d8" font-family="monospace">PWR</text>
-                            <circle id="pi-led" cx="22" cy="78" r="5" class="pi-led"/>
-                            <text x="32" y="81" font-size="8" fill="#cfe8d8" font-family="monospace">ACT</text>
-                        </svg>
-                        <dl class="pi-stats">
-                            <div><dt>status</dt><dd id="pi-online"><span class="pi-status-dot"></span><span class="pi-online-text">checking...</span></dd></div>
-                            <div><dt>last seen</dt><dd id="pi-last-seen">-</dd></div>
-                            <div><dt>blinks</dt><dd id="pi-blinks">-</dd></div>
-                        </dl>
+                <div class="pi-body">
+                    <p class="pi-status">
+                        <span id="pi-online" class="pi-badge"><span class="pi-status-dot"></span><span class="pi-online-text">checking...</span></span>
+                        <span>seen <span id="pi-last-seen">-</span> &middot; <span id="pi-blinks">-</span> blinks so far</span>
+                    </p>
+                    <h3 class="pi-heading">Say hi to the Pi on my desk. <span class="pi-heading-accent">It'll blink back.</span></h3>
+                    <div class="pi-pokes" role="group" aria-label="Poke the Pi">
+                        <button type="button" class="pi-poke" data-poke="wave"><span class="pi-poke-icon" aria-hidden="true">&#128075;</span>wave</button>
+                        <button type="button" class="pi-poke" data-poke="heart"><span class="pi-poke-icon" aria-hidden="true">&#10084;&#65039;</span>heart</button>
+                        <button type="button" class="pi-poke" data-poke="party"><span class="pi-poke-icon" aria-hidden="true">&#127881;</span>party</button>
                     </div>
-                    <div class="pi-pokes">
-                        <button type="button" class="pi-poke" data-poke="wave">&#128075; wave</button>
-                        <button type="button" class="pi-poke" data-poke="heart">&#10084;&#65039; heart</button>
-                        <button type="button" class="pi-poke" data-poke="party">&#127881; party</button>
-                    </div>
-                    <ol id="pi-log" class="pi-log" aria-live="polite">
-                        <li class="pi-log-dim">tap a poke, or type a message below</li>
-                    </ol>
-                    <form id="pi-form" class="pi-prompt">
-                        <label class="pi-prompt-line">
-                            <span class="pi-prompt-sign">$ export NAME=</span>
-                            <input type="text" class="pi-prompt-input" name="name" placeholder="anonymous" maxlength="30" autocomplete="off">
-                        </label>
-                        <label class="pi-prompt-line">
-                            <span class="pi-prompt-sign">$ say</span>
-                            <input type="text" class="pi-prompt-input" name="message" placeholder="a short message, then enter" maxlength="140" autocomplete="off">
-                            <button type="submit" class="pi-send" aria-label="Send message">&#9166;</button>
-                        </label>
+                    <form id="pi-form" class="pi-form">
+                        <label class="pi-form-label" for="pi-message">or leave a note (it shows up on my desk)</label>
+                        <div class="pi-pill">
+                            <input type="text" class="pi-pill-name" name="name" placeholder="your name" maxlength="30" autocomplete="off" aria-label="Your name (optional)">
+                            <input type="text" id="pi-message" class="pi-pill-message" name="message" placeholder="say something nice..." maxlength="140" autocomplete="off">
+                            <button type="submit" class="pi-send">send</button>
+                        </div>
                         <input type="text" class="pi-honeypot" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
                     </form>
+                    <p id="pi-note" class="pi-note" aria-live="polite"></p>
                 </div>
             </div>
         </section>
